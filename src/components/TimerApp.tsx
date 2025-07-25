@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import TimerDisplay from "./TimerDisplay";
+import Controls from "./Controls";
 
 export default function TimerApp() {
     return(
@@ -15,11 +16,12 @@ export default function TimerApp() {
                 <CardHeader>
                     <CardTitle className="text-2xl font-bold text-center">作業時間</CardTitle>
                 </CardHeader>
-                <CardContent className="flex justify-center">
+                <CardContent className="flex flex-col items-center gap-6">
                     <TimerDisplay 
                         minutes={25} 
                         seconds={0} 
                     />
+                    <Controls/>
                 </CardContent>
             </Card>
         </div>
