@@ -8,6 +8,7 @@ import {
 import { useState, useEffect } from "react";
 import TimerDisplay from "./TimerDisplay";
 import Controls from "./Controls";
+import MetadataUpdater from "./MetadataUpdater";
 import { playNotificationSound } from "@/utils/sound";
 
 // タイマーのモードを表す型
@@ -107,9 +108,14 @@ export default function TimerApp() {
                         onReset={handleReset}
                         onModeToggle={toggleMode}
                         isRunning={isRunning}
-                    />
+                    /> 
                 </CardContent>
             </Card>
+            <MetadataUpdater
+                minutes={timeLeft.minutes}
+                seconds={timeLeft.seconds}
+                mode={mode}
+            />
         </div>
     )
 }
