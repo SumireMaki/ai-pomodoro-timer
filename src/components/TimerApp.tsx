@@ -8,6 +8,7 @@ import {
 import { useState, useEffect } from "react";
 import TimerDisplay from "./TimerDisplay";
 import Controls from "./Controls";
+import { playNotificationSound } from "@/utils/sound";
 
 // タイマーのモードを表す型
 type Mode = 'work' | 'break';
@@ -65,6 +66,7 @@ export default function TimerApp() {
                         if(prev.minutes === 0) {
                             setIsRunning(false);
                             toggleMode(); // モードを自動切り替え
+                            void  playNotificationSound();
                             return prev;
                         }
                         
