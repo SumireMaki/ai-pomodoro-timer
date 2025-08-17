@@ -100,6 +100,7 @@ export default function TimerApp() {
                     <TimerDisplay 
                         minutes={timeLeft.minutes} 
                         seconds={timeLeft.seconds} 
+                        mode={mode}
                     />
                     <Controls
                         onStart={handleStart}
