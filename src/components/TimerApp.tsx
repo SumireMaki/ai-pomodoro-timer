@@ -127,7 +127,7 @@ export default function TimerApp() {
                         }}
                         className="p-2 border-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        {[5, 10, 15, 30, 45, 60].map((minutes) => (
+                        {[5, 10, 15, 25, 30, 45, 60].map((minutes) => (
                             <option 
                                 key={minutes} 
                                 value={minutes}
