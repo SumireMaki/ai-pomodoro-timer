@@ -7,6 +7,7 @@ import {
     CardFooter
 } from "@/components/ui/card";
 import { useState, useEffect } from "react";
+import { Switch } from "@/components/ui/switch";
 import TimerDisplay from "./TimerDisplay";
 import Controls from "./Controls";
 import MetadataUpdater from "./MetadataUpdater";
@@ -49,9 +50,12 @@ export default function TimerApp() {
             seconds: 0 
         });
 
-        // タイマーを停止状態にする
-        setIsRunning(false);
+        // 自動開始がONの場合は次のセッションを自動的に開始
+        setIsRunning(autoStart);
     }
+
+    // 自動開始の設定
+    const [autoStart, setAutoStart] = useState(false);
 
     // 開始・停止ボタンのハンドラ
     const handleStart = () => {
@@ -79,11 +83,14 @@ export default function TimerApp() {
                         // 分数が0の場合はタイマー終了
                         if(prev.minutes === 0) {
                             setIsRunning(false);
-                            toggleMode(); // モードを自動切り替え
                             if(mode === 'work'){
                                 void confetti(); // 紙吹雪を表示
                             }
                             void  playNotificationSound();
+                            // 少し遅延させてからモード切替と自動開始を実行
+                            setTimeout(() => {
+                                toggleMode(); // モードを自動切り替え
+                            }, 100);
                             return prev;
                         }
                         
@@ -178,6 +185,14 @@ export default function TimerApp() {
                                 </option>
                             ))}
                         </select>
+                    </div>
+                    {/* 自動開始の設定 */}
+                    <div className="flex items-center gap-2 w-full justify-between">
+                        <label className="text-sm font-medium min-w-[4.5rem]">自動開始</label>
+                        <Switch
+                            checked={autoStart}
+                            onCheckedChange={() => {setAutoStart(!autoStart);}}
+                        />
                     </div>
                 </CardFooter>
             </Card>
