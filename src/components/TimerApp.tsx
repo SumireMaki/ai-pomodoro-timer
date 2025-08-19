@@ -13,6 +13,7 @@ import Controls from "./Controls";
 import MetadataUpdater from "./MetadataUpdater";
 import { useReward } from "react-rewards";
 import { playNotificationSound } from "@/utils/sound";
+import { getRefreshSuggestion } from "@/utils/gemini";
 
 // タイマーのモードを表す型
 type Mode = 'work' | 'break';
@@ -111,6 +112,14 @@ export default function TimerApp() {
             }
         }
     }, [isRunning]);
+
+    useEffect(() => {
+        const testGemini = async () => {
+            const suggestion = await getRefreshSuggestion();
+            console.log(suggestion);
+        }
+        testGemini();
+    }, []);
 
     return(
         <div className="min-h-screen flex items-center justify-center bg-background p-4 relative">
