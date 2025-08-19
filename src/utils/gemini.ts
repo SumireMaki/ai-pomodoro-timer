@@ -1,5 +1,5 @@
 // APIルートを呼び出してリフレッシュ提案を作成
-export async function getRefreshSuggestion(): Promise<string> {
+export async function generateRefreshSuggestion(): Promise<string> {
     try{
         // APIを呼び出す
         const response = await fetch('/api/refresh-suggestion');

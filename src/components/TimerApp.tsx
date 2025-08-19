@@ -8,12 +8,13 @@ import {
 } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
+import RefreshSuggestion from "./RefreshSuggestion";
 import TimerDisplay from "./TimerDisplay";
 import Controls from "./Controls";
 import MetadataUpdater from "./MetadataUpdater";
 import { useReward } from "react-rewards";
 import { playNotificationSound } from "@/utils/sound";
-import { getRefreshSuggestion } from "@/utils/gemini";
+import { generateRefreshSuggestion } from "@/utils/gemini";
 
 // タイマーのモードを表す型
 type Mode = 'work' | 'break';
@@ -39,6 +40,9 @@ export default function TimerApp() {
     // タイマーの状態を管理するstate
     const [mode, setMode] = useState<Mode>('work');
 
+    // リフレッシュ提案
+    const [refreshSuggestion, setRefreshSuggestion] = useState<string | null>(null);
+
     // モードを切り替える関数
     const toggleMode = () => {
         // 現在のモードを反対のモードに切り替える
@@ -50,6 +54,12 @@ export default function TimerApp() {
             minutes: newMode === 'work' ? workDuration : breakDuration, 
             seconds: 0 
         });
+
+        if (newMode === 'break') {
+            generateRefreshSuggestion()
+                .then((suggestion) => setRefreshSuggestion(suggestion))
+                .catch(console.error);
+        }
 
         // 自動開始がONの場合は次のセッションを自動的に開始
         setIsRunning(autoStart);
@@ -112,14 +122,6 @@ export default function TimerApp() {
             }
         }
     }, [isRunning]);
-
-    useEffect(() => {
-        const testGemini = async () => {
-            const suggestion = await getRefreshSuggestion();
-            console.log(suggestion);
-        }
-        testGemini();
-    }, []);
 
     return(
         <div className="min-h-screen flex items-center justify-center bg-background p-4 relative">
@@ -210,6 +212,10 @@ export default function TimerApp() {
                 minutes={timeLeft.minutes}
                 seconds={timeLeft.seconds}
                 mode={mode}
+            />
+            <RefreshSuggestion
+                suggestion={refreshSuggestion}
+                onClose={() => setRefreshSuggestion(null)}
             />
         </div>
     )
